@@ -1,0 +1,8 @@
+[versions]
+paperweight = "2.+"
+paper = "1.21.10-R0.1-SNAPSHOT"
+
+[libraries]
+
+[plugins]
+paperweight = { id = "io.papermc.paperweight.userdev", version.ref = "paperweight" }

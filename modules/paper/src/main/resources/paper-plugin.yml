@@ -1,0 +1,9 @@
+name: "LoaConnect"
+version: "0.1"
+main: "dev.loapu.loaconnect.paper.LoaConnectPlugin"
+description: "OpenID Connect client for Paper servers"
+api-version: "1.21.10"
+bootstrapper: "dev.loapu.loaconnect.paper.LoaConnectBootstrap"
+loader: "dev.loapu.loaconnect.paper.LoaConnectLoader"
+authors:
+  - Loapu
