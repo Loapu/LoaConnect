@@ -1,0 +1,10 @@
+general:
+  base-url: "http://localhost"
+  port: 11015
+  behind-reverse-proxy: false
+  login-timeout-in-minutes: 2
+idp:
+  name: "My Identity Provider"
+  issuer: "https://auth.example.com"
+  client-id: "change-me"
+  client-secret: "change-me"
