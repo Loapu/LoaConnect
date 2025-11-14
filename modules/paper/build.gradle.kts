@@ -11,6 +11,7 @@ project.version = "0.2"
 dependencies {
     paperweight.paperDevBundle(libs.versions.paper)
     implementation(libs.nimbus)
+    implementation(libs.luckperms)
 }
 
 paperweight.reobfArtifactConfiguration = io.papermc.paperweight.userdev.ReobfArtifactConfiguration.MOJANG_PRODUCTION

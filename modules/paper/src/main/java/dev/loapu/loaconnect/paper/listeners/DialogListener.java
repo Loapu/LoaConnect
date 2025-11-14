@@ -19,6 +19,7 @@ public class DialogListener implements Listener
 		this.plugin = plugin;
 	}
 	
+	@SuppressWarnings("UnstableApiUsage")
 	@EventHandler
 	void onHandleDialog(PlayerCustomClickEvent event)
 	{
@@ -28,6 +29,7 @@ public class DialogListener implements Listener
 		if (uniqueId == null) return;
 		
 		Key key = event.getIdentifier();
-		if (key.equals(Key.key("loaconnect:auth/deny"))) plugin.setConnectionJoinResult(uniqueId, false);
+		if (key.equals(Key.key("loaconnect:auth/deny")))
+			plugin.connectionListener().setConnectionJoinResult(uniqueId, false);
 	}
 }

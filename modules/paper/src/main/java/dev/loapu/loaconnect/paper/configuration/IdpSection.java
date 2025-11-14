@@ -4,6 +4,7 @@ import com.nimbusds.oauth2.sdk.Scope;
 import com.nimbusds.oauth2.sdk.auth.Secret;
 import com.nimbusds.oauth2.sdk.id.ClientID;
 import com.nimbusds.oauth2.sdk.id.Issuer;
+import dev.loapu.loaconnect.paper.LoaConnectPlugin;
 
 public record IdpSection(String name, Issuer issuer, ClientID clientId, Secret clientSecret,
 						 Scope scope)
@@ -16,9 +17,9 @@ public record IdpSection(String name, Issuer issuer, ClientID clientId, Secret c
 			if (!issuer.isValid()) throw new IllegalArgumentException("idp issuer is invalid");
 			return true;
 		}
-		catch (Exception e)
+		catch (IllegalArgumentException e)
 		{
-			e.printStackTrace();
+			LoaConnectPlugin.instance().getComponentLogger().error("The idp settings section contains an error: ", e);
 			return false;
 		}
 	}

@@ -5,6 +5,7 @@ import com.nimbusds.oauth2.sdk.auth.Secret;
 import com.nimbusds.oauth2.sdk.id.ClientID;
 import com.nimbusds.oauth2.sdk.id.Issuer;
 import dev.loapu.loaconnect.paper.LoaConnectPlugin;
+import dev.loapu.loaconnect.paper.transactions.Transaction;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.net.URI;
@@ -17,6 +18,8 @@ public class ConfigProvider
 	
 	public ConfigProvider(LoaConnectPlugin plugin)
 	{
+		Transaction transaction = new Transaction();
+		transaction.info("Loading plugin configuration...");
 		plugin.saveDefaultConfig();
 		ConfigurationSection generalSection = plugin.getConfig().getConfigurationSection("general");
 		assert generalSection != null;
@@ -24,9 +27,10 @@ public class ConfigProvider
 			generalSection.getString("base-url"),
 			generalSection.getInt("port"),
 			generalSection.getBoolean("behind-reverse-proxy"),
-			"/callback",
 			URI.create(generalSection.getString("base-url") + (generalSection.getBoolean("behind-reverse-proxy") ? "" : ":" + generalSection.getInt("port")) + "/callback"),
-			generalSection.getInt("login-timeout-in-minutes")
+			generalSection.getInt("login-timeout-in-minutes"),
+			generalSection.getBoolean("sync-groups"),
+			generalSection.getString("group-prefix")
 		);
 		ConfigurationSection idpSection = plugin.getConfig().getConfigurationSection("idp");
 		assert idpSection != null;
@@ -35,20 +39,22 @@ public class ConfigProvider
 			Issuer.parse(idpSection.getString("issuer")),
 			new ClientID(idpSection.getString("client-id")),
 			new Secret(Objects.requireNonNull(idpSection.getString("client-secret"))),
-			Scope.parse("openid")
+			Scope.parse(general.syncGroups() ? "openid groups" : "openid")
 		);
 		
 		if (!general.valid())
 		{
-			plugin.error("General section not valid, shutting down...");
+			transaction.error("General section not valid, shutting down...");
 			plugin.getServer().getPluginManager().disablePlugin(plugin);
 			return;
 		}
 		if (!idp.valid())
 		{
-			plugin.error("IdP section not valid, shutting down...");
+			transaction.error("IdP section not valid, shutting down...");
 			plugin.getServer().getPluginManager().disablePlugin(plugin);
 		}
+		transaction.info("Success!");
+		transaction.end();
 	}
 	
 	public GeneralSection general()

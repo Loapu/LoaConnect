@@ -3,6 +3,8 @@ general:
   port: 11015
   behind-reverse-proxy: false
   login-timeout-in-minutes: 2
+  sync-groups: false
+  group-prefix: "luckperms_"
 idp:
   name: "My Identity Provider"
   issuer: "https://auth.example.com"

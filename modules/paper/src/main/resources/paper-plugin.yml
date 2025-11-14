@@ -7,3 +7,8 @@ bootstrapper: "dev.loapu.loaconnect.paper.LoaConnectBootstrap"
 loader: "dev.loapu.loaconnect.paper.LoaConnectLoader"
 authors:
   - Loapu
+dependencies:
+  server:
+    LuckPerms:
+      load: BEFORE
+      required: false

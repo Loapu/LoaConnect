@@ -1,20 +1,24 @@
 package dev.loapu.loaconnect.paper.configuration;
 
+import dev.loapu.loaconnect.paper.LoaConnectPlugin;
+
 import java.net.URI;
 
-public record GeneralSection(String baseUrl, int port, boolean behindReverseProxy, String callbackEndpoint, URI callbackUri, int loginTimeoutInMinutes)
+public record GeneralSection(String baseUrl, int port, boolean behindReverseProxy, URI callbackUri, int loginTimeoutInMinutes, boolean syncGroups, String groupPrefix)
 {
 	public boolean valid()
 	{
 		try
 		{
+			//noinspection ResultOfMethodCallIgnored
 			URI.create(baseUrl);
-			if (loginTimeoutInMinutes <= 0 || loginTimeoutInMinutes > 60) throw new RuntimeException("Invalid login timeout");
-			return  true;
+			if (loginTimeoutInMinutes <= 0 || loginTimeoutInMinutes > 60)
+				throw new IllegalArgumentException("Invalid login timeout");
+			return true;
 		}
-		catch(Exception e)
+		catch (NullPointerException | IllegalArgumentException e)
 		{
-			e.printStackTrace();
+			LoaConnectPlugin.instance().getComponentLogger().error("The general settings section contains an error: ", e);
 			return false;
 		}
 	}
